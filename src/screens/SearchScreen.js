@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
-import SearchBar from "../components/SearchBar";
-import useResults from "../hooks/useResults";
-import ResultsList from "../components/ResultsList";
-
+import React, { useState } from 'react';
+import { ScrollView,View } from 'react-native';
+import { Text, Button } from '@ui-kitten/components';
+import SearchBar from '../components/SearchBar';
+import useResults from '../hooks/useResults';
+import ResultsList from '../components/ResultsList';
+import { myTheme } from '../../eva';
 const SearchScreen = () => {
-  const [term, setTerm] = useState("");
+  const [term, setTerm] = useState('');
   const [searchApi, results, errorMessage] = useResults();
 
   const filterResultsByPrice = (price) => {
@@ -16,36 +17,28 @@ const SearchScreen = () => {
   };
 
   return (
-    <>
+    <ScrollView style={styles.background}>
+      <View style={{backgroundColor: myTheme.colors.primary,}}>
       <SearchBar
         term={term}
         onTermChange={setTerm}
         onTermSubmit={() => searchApi(term)}
       />
+      </View>
+      
       {errorMessage && <Text>{errorMessage}</Text>}
-      <ScrollView>
-        <ResultsList
-          results={filterResultsByPrice("$")}
-          title="Cost Effective"
-        />
-        <ResultsList 
-        results={filterResultsByPrice("$$")} 
-        title="Bit Pricier"
-         />
-        <ResultsList
-          results={filterResultsByPrice("$$$")}
-          title="Big Spender"
-        />
-      </ScrollView>
-    </>
+      <ResultsList results={filterResultsByPrice('$')} title="Cost Effective" />
+      <ResultsList results={filterResultsByPrice('$$')} title="Bit Pricier" />
+      <ResultsList results={filterResultsByPrice('$$$')} title="Big Spender" />
+    </ScrollView>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   background: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     flex: 1,
   },
-});
+};
 
 export default SearchScreen;
