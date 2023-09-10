@@ -7,7 +7,6 @@ import { EvaIconsPack } from "@ui-kitten/eva-icons"; // Import EvaIconsPack
 import { myTheme } from "./eva"; // Import your UI Kitten theme
 import SearchScreen from "./src/screens/SearchScreen";
 import ResultsShowScreen from "./src/screens/ResultsShowScreen";
-import { View} from "react-native";
 
 const navigator = createStackNavigator(
   {

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View ,TouchableOpacity } from "react-native";
 import { Card, Text } from "@ui-kitten/components"; 
 import ResultsDetail from "./ResultsDetail";
 import { withNavigation } from "react-navigation";
@@ -18,13 +18,13 @@ const ResultsList = ({ title, results, navigation }) => {
         {title}
       </Text>
       {results.map((item) => (
-        <View
+        <TouchableOpacity 
           key={item.id}
           style={styles.cardItem}
           onPress={() => navigation.navigate("ResultsShow", { id: item.id })}
         >
           <ResultsDetail result={item} />
-        </View>
+        </TouchableOpacity >
       ))}
     </>
   );
