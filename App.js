@@ -7,11 +7,13 @@ import { EvaIconsPack } from "@ui-kitten/eva-icons"; // Import EvaIconsPack
 import { myTheme } from "./eva"; // Import your UI Kitten theme
 import SearchScreen from "./src/screens/SearchScreen";
 import ResultsShowScreen from "./src/screens/ResultsShowScreen";
+import ResultsMap from "./src/components/ResultsMap";
 
 const navigator = createStackNavigator(
   {
     Search: SearchScreen,
     ResultsShow: ResultsShowScreen,
+    Map: ResultsMap,
   },
   {
     initialRouteName: "Search",

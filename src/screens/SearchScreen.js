@@ -5,7 +5,8 @@ import SearchBar from '../components/SearchBar';
 import useResults from '../hooks/useResults';
 import ResultsList from '../components/ResultsList';
 import { myTheme } from '../../eva';
-const SearchScreen = () => {
+import { TouchableOpacity } from 'react-native-gesture-handler';
+const SearchScreen = ({ navigation }) => {
   const [term, setTerm] = useState('');
   const [searchApi, results, errorMessage] = useResults();
 
@@ -25,6 +26,10 @@ const SearchScreen = () => {
         onTermSubmit={() => searchApi(term)}
       />
       </View>
+      <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5, fontWeight: 'bold', color: myTheme.colors.primary}}>We have found {results.length} results</Text>
+      <TouchableOpacity style={{marginLeft: 10, marginBottom: 10,}} onPress={() => navigation.navigate("Map")}>
+        <Text style={{color: myTheme.colors.primary}}>View Map</Text>
+      </TouchableOpacity>
       
       {errorMessage && <Text>{errorMessage}</Text>}
       <ResultsList results={filterResultsByPrice('$')} title="Cost Effective" />
