@@ -1,13 +1,18 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import BottomTabNavigator from './navigation/BottomTabNavigator'; // Import your navigation component
+import { createAppContainer } from "react-navigation";
+import {createStackNavigator} from "react-navigation-stack"
+import SearchScreen from "./src/screens/SearchScreen";
+import ResultsShowScreen from "./src/screens/ResultsShowScreen";
 
-const App = () => {
-  return (
-    <NavigationContainer>
-      <BottomTabNavigator />
-    </NavigationContainer>
-  );
-};
+const navigator = createStackNavigator({
+  Search: SearchScreen,
+  ResultsShow:ResultsShowScreen,
+  
+},{
+  initialRouteName: 'Search',
+  defaultNavigationOptions:{
+    title: 'Business Search'
 
-export default App;
+  }
+});
+
+export default createAppContainer(navigator)
