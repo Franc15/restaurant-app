@@ -14,7 +14,7 @@ const SearchScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const restaurants = useSelector((state) => state.restaurant.restaurants);
 
-  console.log("restaurants", restaurants);
+  const user = useSelector((state) => state.auth.user);
 
   const filterResultsByPrice = (price) => {
     // price === '$' || '$$' || '$$$'
