@@ -6,9 +6,15 @@ import useResults from '../hooks/useResults';
 import ResultsList from '../components/ResultsList';
 import { myTheme } from '../../eva';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
 const SearchScreen = ({ navigation }) => {
   const [term, setTerm] = useState('');
   const [searchApi, results, errorMessage] = useResults();
+
+  const dispatch = useDispatch();
+  const restaurants = useSelector((state) => state.restaurant.restaurants);
+
+  console.log("restaurants", restaurants);
 
   const filterResultsByPrice = (price) => {
     // price === '$' || '$$' || '$$$'

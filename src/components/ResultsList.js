@@ -20,6 +20,7 @@ const ResultsList = ({ title, results, navigation }) => {
       {results.map((item) => (
         <TouchableOpacity 
           key={item.id}
+          horizontal
           style={styles.cardItem}
           onPress={() => navigation.navigate("ResultsShow", { id: item.id })}
         >

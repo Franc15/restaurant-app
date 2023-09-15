@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import yelp from "../api/yelp";
+import { useDispatch, useSelector } from "react-redux";
+import { setRestaurants } from "../store/restaurantSlice";
 
 export default () => {
   const [results, setResults] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const dispatch = useDispatch();
 
   const searchApi = async (searchTerm) => {
     try {
@@ -11,12 +15,14 @@ export default () => {
         params: {
           limit: 50,
           term: searchTerm,
-          location: "san jose",
+          location: "new york",
         },
       });
       setResults(response.data.businesses);
+      dispatch(setRestaurants(response.data.businesses));
     } catch (err) {
       setErrorMessage("Something went wrong");
+      dispatch(setRestaurants([]));
     }
   };
 
