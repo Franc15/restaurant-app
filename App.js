@@ -13,6 +13,8 @@ import SignupScreen from "./src/screens/SignupScreen";
 import SigninScreen from "./src/screens/SigninScreen";
 import WishlistScreen from "./src/screens/WishlistScreen";
 import AccountScreen from "./src/screens/AccountScreen";
+import { Provider } from "react-redux";
+import { store } from "./src/store/store";
 
 const navigator = createStackNavigator(
   {
@@ -26,10 +28,9 @@ const navigator = createStackNavigator(
     initialRouteName: "Search",
     defaultNavigationOptions: {
       headerTitle: () => (
-       
-          <Text category="h3" style={{ color: 'white' }}>
-            FoodieFindr
-          </Text>
+        <Text category="h3" style={{ color: "white" }}>
+          FoodieFindr
+        </Text>
       ),
       headerStyle: {
         backgroundColor: myTheme.colors.primary, // Background color
@@ -43,29 +44,30 @@ const switchNavigator = createSwitchNavigator({
     Signup: SignupScreen,
     Signin: SigninScreen,
   }),
-  mainFlow: createMaterialBottomTabNavigator({
-    restaurantListFlow: createStackNavigator({
-      Search: SearchScreen,
-      ResultsShow: ResultsShowScreen,
-    }),
-    Map: ResultsMap,
-    Wishlist: WishlistScreen,
-    // Account: AccountScreen,
-  },
-  {
-    initialRouteName: "restaurantListFlow",
-    defaultNavigationOptions: {
-      headerTitle: () => (
-       
-          <Text category="h3" style={{ color: 'white' }}>
+  mainFlow: createMaterialBottomTabNavigator(
+    {
+      restaurantListFlow: createStackNavigator({
+        Search: SearchScreen,
+        ResultsShow: ResultsShowScreen,
+      }),
+      Map: ResultsMap,
+      Wishlist: WishlistScreen,
+      // Account: AccountScreen,
+    },
+    {
+      initialRouteName: "restaurantListFlow",
+      defaultNavigationOptions: {
+        headerTitle: () => (
+          <Text category="h3" style={{ color: "white" }}>
             FoodieFindr
           </Text>
-      ),
-      headerStyle: {
-        backgroundColor: myTheme.colors.primary, 
+        ),
+        headerStyle: {
+          backgroundColor: myTheme.colors.primary,
+        },
       },
-    },
-  }),
+    }
+  ),
 });
 
 const AppNavigator = createAppContainer(switchNavigator);
@@ -73,10 +75,12 @@ const AppNavigator = createAppContainer(switchNavigator);
 const App = () => {
   return (
     <>
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={myTheme}>
-        <AppNavigator />
-      </ApplicationProvider>
+      <Provider store={store}>
+        <IconRegistry icons={EvaIconsPack} />
+        <ApplicationProvider {...eva} theme={myTheme}>
+          <AppNavigator />
+        </ApplicationProvider>
+      </Provider>
     </>
   );
 };
