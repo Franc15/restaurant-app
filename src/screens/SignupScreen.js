@@ -37,6 +37,7 @@ const SignupScreen = ({ navigation }) => {
       <Spacer>
         <Button title="Sign Up" onPress={() => navigation.navigate("mainFlow")} />
       </Spacer>
+      <Text style={{color: 'blue'}} onPress={() => navigation.navigate("Signin")}>Already have an account? Sign in instead</Text>
     </View>
   );
 };
