@@ -1,6 +1,7 @@
 import React from "react";
-import { createAppContainer } from "react-navigation";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { ApplicationProvider, Text, IconRegistry } from "@ui-kitten/components";
 import * as eva from "@eva-design/eva";
 import { EvaIconsPack } from "@ui-kitten/eva-icons"; // Import EvaIconsPack
@@ -8,12 +9,18 @@ import { myTheme } from "./eva"; // Import your UI Kitten theme
 import SearchScreen from "./src/screens/SearchScreen";
 import ResultsShowScreen from "./src/screens/ResultsShowScreen";
 import ResultsMap from "./src/components/ResultsMap";
+import SignupScreen from "./src/screens/SignupScreen";
+import SigninScreen from "./src/screens/SigninScreen";
+import WishlistScreen from "./src/screens/WishlistScreen";
+import AccountScreen from "./src/screens/AccountScreen";
 
 const navigator = createStackNavigator(
   {
     Search: SearchScreen,
     ResultsShow: ResultsShowScreen,
     Map: ResultsMap,
+    Signup: SignupScreen,
+    Signin: SigninScreen,
   },
   {
     initialRouteName: "Search",
@@ -31,7 +38,37 @@ const navigator = createStackNavigator(
   }
 );
 
-const AppNavigator = createAppContainer(navigator);
+const switchNavigator = createSwitchNavigator({
+  loginFlow: createStackNavigator({
+    Signup: SignupScreen,
+    Signin: SigninScreen,
+  }),
+  mainFlow: createMaterialBottomTabNavigator({
+    restaurantListFlow: createStackNavigator({
+      Search: SearchScreen,
+      ResultsShow: ResultsShowScreen,
+    }),
+    Map: ResultsMap,
+    Wishlist: WishlistScreen,
+    // Account: AccountScreen,
+  },
+  {
+    initialRouteName: "restaurantListFlow",
+    defaultNavigationOptions: {
+      headerTitle: () => (
+       
+          <Text category="h3" style={{ color: 'white' }}>
+            FoodieFindr
+          </Text>
+      ),
+      headerStyle: {
+        backgroundColor: myTheme.colors.primary, 
+      },
+    },
+  }),
+});
+
+const AppNavigator = createAppContainer(switchNavigator);
 
 const App = () => {
   return (
