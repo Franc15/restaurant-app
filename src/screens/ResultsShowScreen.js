@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, FlatList, Image, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ScrollView, FlatList, Image, ActivityIndicator, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import { FontAwesome } from "@expo/vector-icons";
 import yelp from "../api/yelp";
 
 const ResultsShowScreen = ({ navigation }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [wishlist, setWishlist] = useState(false);
   const id = navigation.getParam('id');
 
   const getResult = async id => {
@@ -24,6 +26,37 @@ const ResultsShowScreen = ({ navigation }) => {
   useEffect(() => {
     getResult(id);
   }, []);
+
+  const toggleWishlist = async () => {
+    try {
+      if (wishlist) {
+        // If it's in the wishlist, remove it
+        const response = await fetch(`/wishlists/remove/${id}`, {
+          method: "DELETE",
+        });
+        const data = await response.json();
+        console.log(data); // Handle the response data as needed
+      } else {
+        // If it's not in the wishlist, add it
+        const response = await fetch("/wishlists/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            restaurant_id: id,
+          }),
+        });
+        const data = await response.json();
+        console.log(data); // Handle the response data as needed
+      }
+
+      // Toggle the wishlist state based on the response
+      setWishlist(!wishlist);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   if (loading) {
     return (
@@ -61,6 +94,10 @@ const ResultsShowScreen = ({ navigation }) => {
             <Image style={styles.image} source={{ uri: item }} />
           )}
         />
+
+        <TouchableOpacity  style={styles.wishlistIcon}>
+          <FontAwesome name={wishlist ? "heart" : "heart-o"} size={24} color={wishlist ? "red" : "black"} />
+        </TouchableOpacity>
 
         <View style={styles.infoContainer}>
           <Text style={styles.name}>{result.name}</Text>
@@ -107,7 +144,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   infoContainer: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 15,
   },
   name: {
     fontSize: 24,
@@ -154,6 +191,12 @@ const styles = StyleSheet.create({
   errorMessage: {
     fontSize: 18,
     color: 'red',
+  },
+  wishlistIcon: {
+    position: 'absolute',
+    top: 220,
+    right: 25,
+    zIndex: 1,
   },
 });
 

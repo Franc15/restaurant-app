@@ -2,40 +2,16 @@ import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, Input, Button } from "react-native-elements";
 import Spacer from "../components/Spacer";
-import { useDispatch } from "react-redux";
-import { setUser } from "../store/authSlice";
-import foodieApi from "../api/app";
 
-const SigninScreen = ({ navigation }) => {
-    const dispatch = useDispatch();
-    
+const SignupScreen = ({ navigation }) => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false); 
-    const [errorMessage, setErrorMessage] = useState("");
-
-    const signin = async () => {
-        setLoading(true);
-        try {
-            const response = await foodieApi.post("/login", {
-                email,
-                password,
-            });
-            setErrorMessage("");
-            dispatch(setUser(response.data.data));
-            navigation.navigate("mainFlow");
-            setLoading(false);
-        } catch (err) {
-            setLoading(false);
-            console.log(err);
-            setErrorMessage("Something went wrong");
-        }
-    }
 
   return (
     <View style={styles.container}>
       <Spacer>
-        <Text h2>Sign in</Text>
+        <Text h2>Sign up</Text>
       </Spacer>
 
       <Input
@@ -55,18 +31,17 @@ const SigninScreen = ({ navigation }) => {
         autoCapitalize="none"
         autoCorrect={false}
       />
-      {errorMessage ? (
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
-      ) : null}
+      {/* {state.errorMessage ? (
+        <Text style={styles.errorMessage}>{state.errorMessage}</Text>
+      ) : null} */}
       <Spacer>
-        <Button title={loading ? "Signing you in..." : "Sign In"} onPress={() => signin()} />
+        <Button title="Sign Up" onPress={() => navigation.navigate("mainFlow")} />
       </Spacer>
-      <Text style={{color: 'blue'}} onPress={() => navigation.navigate("Signup")}>Don't have an account? Sign up instead</Text>
     </View>
   );
 };
 
-SigninScreen.navigationOptions = () => {
+SignupScreen.navigationOptions = () => {
   return {
     headerShown: false,
   };
@@ -86,4 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SigninScreen;
+export default SignupScreen;
