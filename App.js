@@ -15,6 +15,13 @@ import WishlistScreen from "./src/screens/WishlistScreen";
 import AccountScreen from "./src/screens/AccountScreen";
 import { Provider } from "react-redux";
 import { store } from "./src/store/store";
+import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons or any other icon library you prefer
+
+// Define your icons here
+const searchIcon = <Icon name="search" size={24} color="white" />;
+const mapIcon = <Icon name="map" size={24} color="white" />;
+const wishlistIcon = <Icon name="heart" size={24} color="white" />;
+const accountIcon = <Icon name="person" size={24} color="white" />;
 
 const navigator = createStackNavigator(
   {
@@ -46,26 +53,73 @@ const switchNavigator = createSwitchNavigator({
   }),
   mainFlow: createMaterialBottomTabNavigator(
     {
-      restaurantListFlow: createStackNavigator({
-        Search: SearchScreen,
-        ResultsShow: ResultsShowScreen,
-      }),
-      Map: ResultsMap,
-      Wishlist: WishlistScreen,
-      // Account: AccountScreen,
+      restaurantListFlow: {
+        screen: createStackNavigator({
+          Search: SearchScreen,
+          ResultsShow: ResultsShowScreen,
+        }),
+        navigationOptions: {
+          tabBarLabel: (
+            <Text category="h6" style={{ color: "white", fontSize: 12 }}>
+              Search
+            </Text>
+          ),
+          tabBarIcon: ({ tintColor }) => (
+            <Text category="h3" style={{ color: "white" }}>
+              {searchIcon}
+            </Text>
+          ),
+        },
+      },
+      Map: {
+        screen: ResultsMap,
+        navigationOptions: {
+          tabBarLabel: (
+            <Text category="h6" style={{ color: "white", fontSize: 12 }}>
+              Map
+            </Text>
+          ),
+          tabBarIcon: ({ tintColor }) => (
+            <Text category="h3" style={{ color: "white" }}>
+              {mapIcon}
+            </Text>
+          ),
+        },
+      },
+      Wishlist: {
+        screen: WishlistScreen,
+        navigationOptions: {
+          tabBarLabel: (
+            <Text category="h6" style={{ color: "white", fontSize: 12 }}>
+              Wishlist
+            </Text>
+          ),
+          tabBarIcon: ({ tintColor }) => (
+            <Text category="h3" style={{ color: "white" }}>
+              {wishlistIcon}
+            </Text>
+          ),
+        },
+      },
+      Account: {
+        screen: AccountScreen,
+        navigationOptions: {
+          tabBarLabel: (
+            <Text category="h6" style={{ color: "white", fontSize: 12 }}>
+              Account
+            </Text>
+          ),
+          tabBarIcon: ({ tintColor }) => (
+            <Text category="h3" style={{ color: "white" }}>
+              {accountIcon}
+            </Text>
+          ),
+        },
+      },
     },
     {
       initialRouteName: "restaurantListFlow",
-      defaultNavigationOptions: {
-        headerTitle: () => (
-          <Text category="h3" style={{ color: "white" }}>
-            FoodieFindr
-          </Text>
-        ),
-        headerStyle: {
-          backgroundColor: myTheme.colors.primary,
-        },
-      },
+      barStyle: { backgroundColor: myTheme.colors.primary },
     }
   ),
 });
