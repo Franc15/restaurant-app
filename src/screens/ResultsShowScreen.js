@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 const ResultsShowScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  console.log("user", user)
+
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -53,15 +53,13 @@ const ResultsShowScreen = ({ navigation }) => {
   }, [result]);
 
   const toggleWishlist = async () => {
+    if (!user || !result) {
+      return;
+    }
     try {
       if (wishlist) {
         console.log("Removing from wishlist...")
-        const response  = await foodieApi.delete('/wishlist', {
-          params: {
-            restaurant_id: id,
-            email: user.email,
-          },
-        });
+        const response  = await foodieApi.delete(`/wishlist/${id}/${user.email}`);
         const data = await response.data.data;
         console.log(data);
       } else {
