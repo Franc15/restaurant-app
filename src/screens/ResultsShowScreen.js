@@ -3,13 +3,8 @@ import { View, Text, StyleSheet, ScrollView, FlatList, Image, ActivityIndicator,
 import MapView, { Marker } from "react-native-maps";
 import { FontAwesome } from "@expo/vector-icons";
 import yelp from "../api/yelp";
-import foodieApi from "../api/app";
-import { useDispatch, useSelector } from "react-redux";
 
 const ResultsShowScreen = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
-
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -28,52 +23,35 @@ const ResultsShowScreen = ({ navigation }) => {
     }
   };
 
-  const getWishlist = async () => {
-    try {
-      console.log("Making request to get wishlist...")
-      const response = await foodieApi.get(`/wishlist/${id}/${user.email}`);
-      console.log("dataaa" , response.data);
-      const data = await response.data.data;
-      if (data) {
-        setWishlist(true);
-      }
-      console.log(wishlist);
-    }
-    catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   useEffect(() => {
-    if (!result)
-      getResult(id);
-    if (user && result) {
-      getWishlist();
-    }
-  }, [result]);
+    getResult(id);
+  }, []);
 
   const toggleWishlist = async () => {
-    if (!user || !result) {
-      return;
-    }
     try {
       if (wishlist) {
-        console.log("Removing from wishlist...")
-        const response  = await foodieApi.delete(`/wishlist/${id}/${user.email}`);
-        const data = await response.data.data;
-        console.log(data);
-      } else {
-        console.log("Adding to wishlist...")
-        const response = await foodieApi.post('/wishlist', {
-          email: user.email,
-          restaurant_id: id,
-          restaurant_name: result.name,
-          restaurant_image: result.image_url,
+        // If it's in the wishlist, remove it
+        const response = await fetch(`/wishlists/remove/${id}`, {
+          method: "DELETE",
         });
-        console.log(response.data);
-        console.log("Added to wishlist!")
+        const data = await response.json();
+        console.log(data); // Handle the response data as needed
+      } else {
+        // If it's not in the wishlist, add it
+        const response = await fetch("/wishlists/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            restaurant_id: id,
+          }),
+        });
+        const data = await response.json();
+        console.log(data); // Handle the response data as needed
       }
 
+      // Toggle the wishlist state based on the response
       setWishlist(!wishlist);
     } catch (error) {
       console.error("Error:", error);
@@ -117,7 +95,7 @@ const ResultsShowScreen = ({ navigation }) => {
           )}
         />
 
-        <TouchableOpacity  style={styles.wishlistIcon} onPress={toggleWishlist}>
+        <TouchableOpacity  style={styles.wishlistIcon}>
           <FontAwesome name={wishlist ? "heart" : "heart-o"} size={24} color={wishlist ? "red" : "black"} />
         </TouchableOpacity>
 
