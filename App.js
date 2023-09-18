@@ -60,7 +60,13 @@ const switchNavigator = createSwitchNavigator({
         }),
         navigationOptions: {
           tabBarLabel: (
-            <Text category="h6" style={{ color: "white", fontSize: 12 }}>
+            <Text
+              category="h3"
+              style={{
+                color: "white",
+                fontSize: 12, // Adjust font size as needed
+              }}
+            >
               Search
             </Text>
           ),
@@ -75,7 +81,13 @@ const switchNavigator = createSwitchNavigator({
         screen: ResultsMap,
         navigationOptions: {
           tabBarLabel: (
-            <Text category="h6" style={{ color: "white", fontSize: 12 }}>
+            <Text
+              category="h3"
+              style={{
+                color: "white",
+                fontSize: 12, // Adjust font size as needed
+              }}
+            >
               Map
             </Text>
           ),
@@ -90,7 +102,13 @@ const switchNavigator = createSwitchNavigator({
         screen: WishlistScreen,
         navigationOptions: {
           tabBarLabel: (
-            <Text category="h6" style={{ color: "white", fontSize: 12 }}>
+            <Text
+              category="h3"
+              style={{
+                color: "white",
+                fontSize: 12, // Adjust font size as needed
+              }}
+            >
               Wishlist
             </Text>
           ),
@@ -105,7 +123,13 @@ const switchNavigator = createSwitchNavigator({
         screen: AccountScreen,
         navigationOptions: {
           tabBarLabel: (
-            <Text category="h6" style={{ color: "white", fontSize: 12 }}>
+            <Text
+              category="h3"
+              style={{
+                color: "white",
+                fontSize: 12, // Adjust font size as needed
+              }}
+            >
               Account
             </Text>
           ),
@@ -120,6 +144,7 @@ const switchNavigator = createSwitchNavigator({
     {
       initialRouteName: "restaurantListFlow",
       barStyle: { backgroundColor: myTheme.colors.primary },
+      shifting: false,
     }
   ),
 });
