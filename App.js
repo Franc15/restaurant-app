@@ -1,6 +1,6 @@
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
+import { createStackNavigator, HeaderBackButton } from "react-navigation-stack"; // Import HeaderBackButton
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { ApplicationProvider, Text, IconRegistry } from "@ui-kitten/components";
 import * as eva from "@eva-design/eva";
@@ -23,27 +23,17 @@ const mapIcon = <Icon name="map" size={24} color="white" />;
 const wishlistIcon = <Icon name="heart" size={24} color="white" />;
 const accountIcon = <Icon name="person" size={24} color="white" />;
 
-const navigator = createStackNavigator(
-  {
-    Search: SearchScreen,
-    ResultsShow: ResultsShowScreen,
-    Map: ResultsMap,
-    Signup: SignupScreen,
-    Signin: SigninScreen,
-  },
-  {
-    initialRouteName: "Search",
-    defaultNavigationOptions: {
-      headerTitle: () => (
-        <Text category="h3" style={{ color: "white" }}>
-          FoodieFindr
-        </Text>
-      ),
-      headerStyle: {
-        backgroundColor: myTheme.colors.primary, // Background color
-      },
-    },
-  }
+const logoutIcon = (
+  <Icon
+    name="log-out"
+    size={24}
+    color="black"
+    style={{ marginRight: 10, backgroundColor: "transparent" }} // Add a background color
+    // Add the logic to handle the logout action here
+    onPress={() => {
+      // Handle the logout action here
+    }}
+  />
 );
 
 const switchNavigator = createSwitchNavigator({
@@ -54,17 +44,31 @@ const switchNavigator = createSwitchNavigator({
   mainFlow: createMaterialBottomTabNavigator(
     {
       restaurantListFlow: {
-        screen: createStackNavigator({
-          Search: SearchScreen,
-          ResultsShow: ResultsShowScreen,
-        }),
+        screen: createStackNavigator(
+          {
+            Search: {
+              screen: SearchScreen,
+              navigationOptions: ({ navigation }) => ({
+                title: 'Business Search',
+                headerRight: () => logoutIcon, // Add the logout icon
+              }),
+            },
+            ResultsShow: ResultsShowScreen,
+          },
+          {
+            initialRouteName: 'Search',
+            defaultNavigationOptions: {
+              title: 'Business Search',
+            },
+          }
+        ),
         navigationOptions: {
           tabBarLabel: (
             <Text
               category="h3"
               style={{
                 color: "white",
-                fontSize: 12, // Adjust font size as needed
+                fontSize: 12,
               }}
             >
               Search
@@ -85,7 +89,7 @@ const switchNavigator = createSwitchNavigator({
               category="h3"
               style={{
                 color: "white",
-                fontSize: 12, // Adjust font size as needed
+                fontSize: 12,
               }}
             >
               Map
@@ -106,7 +110,7 @@ const switchNavigator = createSwitchNavigator({
               category="h3"
               style={{
                 color: "white",
-                fontSize: 12, // Adjust font size as needed
+                fontSize: 12,
               }}
             >
               Wishlist
@@ -127,7 +131,7 @@ const switchNavigator = createSwitchNavigator({
               category="h3"
               style={{
                 color: "white",
-                fontSize: 12, // Adjust font size as needed
+                fontSize: 12,
               }}
             >
               Account

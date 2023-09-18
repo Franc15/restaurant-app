@@ -2,36 +2,16 @@ import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, Input, Button } from "react-native-elements";
 import Spacer from "../components/Spacer";
-import foodieApi from "../api/app";
-import { useDispatch } from "react-redux";
-import { setUser } from "../store/authSlice";
 
 const SignupScreen = ({ navigation }) => {
-    const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const signin = async () => {
-    try {
-      const response = await foodieApi.post("/login", {
-        email,
-        password,
-      });
-      setErrorMessage("");
-      dispatch(setUser(response.data.data));
-      navigation.navigate("mainFlow");
-    } catch (err) {
-      console.log(err);
-      setErrorMessage("Something went wrong");
-    }
-  }
 
   return (
     <View style={styles.container}>
       <Spacer>
-        <Text h2>Sign in</Text>
+        <Text h2>Sign up</Text>
       </Spacer>
 
       <Input
@@ -51,11 +31,11 @@ const SignupScreen = ({ navigation }) => {
         autoCapitalize="none"
         autoCorrect={false}
       />
-      {errorMessage ? (
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
-      ) : null}
+      {/* {state.errorMessage ? (
+        <Text style={styles.errorMessage}>{state.errorMessage}</Text>
+      ) : null} */}
       <Spacer>
-        <Button title="Sign In" onPress={() => signin()} />
+        <Button title="Sign Up" onPress={() => navigation.navigate("mainFlow")} />
       </Spacer>
     </View>
   );
