@@ -6,7 +6,7 @@ import foodieApi from "../api/app";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/authSlice";
 
-const SignupScreen = ({ navigation }) => {
+const SigninScreen = ({ navigation }) => {
     const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
@@ -61,7 +61,7 @@ const SignupScreen = ({ navigation }) => {
   );
 };
 
-SignupScreen.navigationOptions = () => {
+SigninScreen.navigationOptions = () => {
   return {
     headerShown: false,
   };
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignupScreen;
+export default SigninScreen;
