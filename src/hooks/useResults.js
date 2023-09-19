@@ -5,11 +5,13 @@ import { setRestaurants } from "../store/restaurantSlice";
 
 export default () => {
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const dispatch = useDispatch();
 
   const searchApi = async (searchTerm) => {
+    setLoading(true);
     try {
       const response = await yelp.get("/search", {
         params: {
@@ -20,7 +22,9 @@ export default () => {
       });
       setResults(response.data.businesses);
       dispatch(setRestaurants(response.data.businesses));
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       setErrorMessage("Something went wrong");
       dispatch(setRestaurants([]));
     }
@@ -31,5 +35,5 @@ export default () => {
     searchApi("pasta");
   }, []);
 
-  return [searchApi, results, errorMessage];
+  return [searchApi, loading, results, errorMessage];
 };

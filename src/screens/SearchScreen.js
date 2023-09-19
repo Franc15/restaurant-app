@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from "react-native";
 import SearchBar from "../components/SearchBar";
 import useResults from "../hooks/useResults";
 import ResultsList from "../components/ResultsList";
 
 const SearchScreen = () => {
   const [term, setTerm] = useState("");
-  const [searchApi, results, errorMessage] = useResults();
+  const [searchApi, loading, results, errorMessage] = useResults();
 
   const filterResultsByPrice = (price) => {
     // price === '$' || '$$' || '$$$'
@@ -14,6 +14,14 @@ const SearchScreen = () => {
       return result.price === price;
     });
   };
+
+  // if (loading) {
+  //   return (
+  //   <View style={[styles.container, styles.horizontal]}>
+  //   <ActivityIndicator size="large" color="#0000ff" />;
+  //   </View>
+  //   );
+  // }
 
   return (
     <>
@@ -23,7 +31,8 @@ const SearchScreen = () => {
         onTermSubmit={() => searchApi(term)}
       />
       {errorMessage && <Text>{errorMessage}</Text>}
-      <ScrollView>
+      {loading ? <View style={[styles.container, styles.horizontal]}><ActivityIndicator size="large" color="#FF5733" /></View> : null}
+      {!loading && results && <ScrollView>
         <ResultsList
           results={filterResultsByPrice("$")}
           title="Cost Effective"
@@ -36,7 +45,7 @@ const SearchScreen = () => {
           results={filterResultsByPrice("$$$")}
           title="Big Spender"
         />
-      </ScrollView>
+      </ScrollView>}
     </>
   );
 };
@@ -45,6 +54,15 @@ const styles = StyleSheet.create({
   background: {
     backgroundColor: "#FFFFFF",
     flex: 1,
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
 });
 
