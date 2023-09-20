@@ -4,7 +4,6 @@ import Spacer from "../components/Spacer";
 import foodieApi from "../api/app";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/authSlice";
-import foodieApi from "../api/app";
 import { Text, Button, Input, Icon, Layout } from "@ui-kitten/components";
 import { myTheme } from "../../eva";
 import SignInImage from "../../assets/signin-page.jpg";

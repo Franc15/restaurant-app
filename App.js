@@ -16,7 +16,7 @@ import AccountScreen from "./src/screens/AccountScreen";
 import { Provider } from "react-redux";
 import { store } from "./src/store/store";
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import MainScreen from "./src/screens/MainScreen";
 const searchIcon = <Text category="h3">SearchIcon</Text>;
 const mapIcon = <Text category="h3">MapIcon</Text>;
 const wishlistIcon = <Text category="h3">WishlistIcon</Text>;
