@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, ImageBackground } from "react-native";
 import Spacer from "../components/Spacer";
+import foodieApi from "../api/app";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/authSlice";
 import foodieApi from "../api/app";

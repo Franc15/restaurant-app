@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, FlatList, Image, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ScrollView, FlatList, Image, ActivityIndicator, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import { FontAwesome } from "@expo/vector-icons";
 import yelp from "../api/yelp";
+import foodieApi from "../api/app";
+import { useDispatch, useSelector } from "react-redux";
 
 const ResultsShowScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [wishlist, setWishlist] = useState(false);
   const id = navigation.getParam('id');
 
   const getResult = async id => {
@@ -21,9 +27,54 @@ const ResultsShowScreen = ({ navigation }) => {
     }
   };
 
+  const getWishlist = async () => {
+    try {
+      console.log("Making request to get wishlist...")
+      const response = await foodieApi.get(`/wishlist/${id}/${user.email}`);
+      console.log("dataaa" , response.data);
+      const data = await response.data.data;
+      if (data) {
+        setWishlist(true);
+      }
+      console.log(wishlist);
+    }
+    catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   useEffect(() => {
-    getResult(id);
-  }, []);
+    if (!result)
+      getResult(id);
+    if (user && result) {
+      getWishlist();
+    }
+  }, [result]);
+
+  const toggleWishlist = async () => {
+    try {
+      if (wishlist) {
+        console.log("Removing from wishlist...")
+        const response  = await foodieApi.delete(`/wishlist/${id}/${user.email}`);
+        const data = await response.data.data;
+        console.log(data);
+      } else {
+        console.log("Adding to wishlist...")
+        const response = await foodieApi.post('/wishlist', {
+          email: user.email,
+          restaurant_id: id,
+          restaurant_name: result.name,
+          restaurant_image: result.image_url,
+        });
+        console.log(response.data);
+        console.log("Added to wishlist!")
+      }
+
+      setWishlist(!wishlist);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   if (loading) {
     return (
@@ -61,6 +112,10 @@ const ResultsShowScreen = ({ navigation }) => {
             <Image style={styles.image} source={{ uri: item }} />
           )}
         />
+
+        <TouchableOpacity  style={styles.wishlistIcon} onPress={toggleWishlist}>
+          <FontAwesome name={wishlist ? "heart" : "heart-o"} size={24} color={wishlist ? "red" : "black"} />
+        </TouchableOpacity>
 
         <View style={styles.infoContainer}>
           <Text style={styles.name}>{result.name}</Text>
@@ -107,7 +162,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   infoContainer: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 15,
   },
   name: {
     fontSize: 24,
@@ -154,6 +209,12 @@ const styles = StyleSheet.create({
   errorMessage: {
     fontSize: 18,
     color: 'red',
+  },
+  wishlistIcon: {
+    position: 'absolute',
+    top: 220,
+    right: 25,
+    zIndex: 1,
   },
 });
 
