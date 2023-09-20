@@ -15,7 +15,7 @@ import WishlistScreen from "./src/screens/WishlistScreen";
 import AccountScreen from "./src/screens/AccountScreen";
 import { Provider } from "react-redux";
 import { store } from "./src/store/store";
-
+import MainScreen from "./src/screens/MainScreen";
 const navigator = createStackNavigator(
   {
     Search: SearchScreen,
@@ -41,6 +41,7 @@ const navigator = createStackNavigator(
 
 const switchNavigator = createSwitchNavigator({
   loginFlow: createStackNavigator({
+    Main: MainScreen,
     Signup: SignupScreen,
     Signin: SigninScreen,
   }),
