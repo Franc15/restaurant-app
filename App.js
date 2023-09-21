@@ -1,4 +1,5 @@
 import React from "react";
+import { View, Image } from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
@@ -17,10 +18,11 @@ import { Provider } from "react-redux";
 import { store } from "./src/store/store";
 import Icon from 'react-native-vector-icons/Ionicons';
 import MainScreen from "./src/screens/MainScreen";
-const searchIcon = <Text category="h3">SearchIcon</Text>;
-const mapIcon = <Text category="h3">MapIcon</Text>;
-const wishlistIcon = <Text category="h3">WishlistIcon</Text>;
-const accountIcon = <Text category="h3">AccountIcon</Text>;
+import FoodieFindrLogo from "./assets/splash.png"
+const searchIcon = <Icon name="search" size={24} color="white" />;
+const mapIcon = <Icon name="map" size={24} color="white" />;
+const wishlistIcon = <Icon name="heart" size={24} color="white" />;
+const accountIcon = <Icon name="person" size={24} color="white" />;
 
 const logoutIcon = (
   <Icon
@@ -34,27 +36,46 @@ const logoutIcon = (
   />
 );
 
-const navigator = createStackNavigator(
-  {
-    Search: SearchScreen,
-    ResultsShow: ResultsShowScreen,
-    Map: ResultsMap,
-    Signup: SignupScreen,
-    Signin: SigninScreen,
-  },
-  {
-    initialRouteName: "Search",
-    defaultNavigationOptions: {
-      headerTitle: () => (
-        <Text category="h3" style={{ color: "white" }}>
-          FoodieFindr
-        </Text>
-      ),
-      headerStyle: {
-        backgroundColor: myTheme.colors.primary,
-      },
-    },
-  }
+// const navigator = createStackNavigator(
+//   {
+//     Search: SearchScreen,
+//     ResultsShow: ResultsShowScreen,
+//     Map: ResultsMap,
+//     Signup: SignupScreen,
+//     Signin: SigninScreen,
+//   },
+//   {
+//     initialRouteName: "Search",
+//     defaultNavigationOptions: {
+//       headerTitle: () => (
+//         <Text category="h3" style={{ color: "white" }}>
+//           FoodieFindr
+//         </Text>
+//       ),
+//       headerStyle: {
+//         backgroundColor: myTheme.colors.primary,
+//       },
+//     },
+//   }
+// );
+
+// CustomHeader component for the "Search" screen header
+const CustomHeader = () => (
+  <View style={{ flexDirection: "row", alignItems: "center" }}>
+    {/* First column (empty) */}
+    <View style={{ flex: 1 }}></View>
+
+    {/* Second column (image) */}
+    <View style={{ flex: 4, alignItems: "center" }}>
+      <Image
+        source={FoodieFindrLogo}
+        style={{ width: 150, height: 50 }} // Customize the size
+      />
+    </View>
+
+    {/* Third column (icon) */}
+    <View style={{ flex: 1, alignItems: "flex-end" }}>{logoutIcon}</View>
+  </View>
 );
 
 const switchNavigator = createSwitchNavigator({
@@ -71,8 +92,7 @@ const switchNavigator = createSwitchNavigator({
             Search: {
               screen: SearchScreen,
               navigationOptions: ({ navigation }) => ({
-                title: 'Business Search',
-                headerRight: () => logoutIcon,
+                headerTitle: () => <CustomHeader />, // Use the CustomHeader component
               }),
             },
             ResultsShow: ResultsShowScreen,

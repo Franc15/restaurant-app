@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, ImageBackground } from "react-native";
+import { View, StyleSheet, ImageBackground, KeyboardAvoidingView, Platform } from "react-native";
 import Spacer from "../components/Spacer";
 import foodieApi from "../api/app";
 import { useDispatch } from "react-redux";
@@ -7,6 +7,7 @@ import { setUser } from "../store/authSlice";
 import { Text, Button, Input, Icon, Layout } from "@ui-kitten/components";
 import { myTheme } from "../../eva";
 import SignInImage from "../../assets/signin-page.jpg";
+
 const SigninScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
@@ -36,11 +37,12 @@ const SigninScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ImageBackground source={SignInImage} style={styles.backgroundImage}>
-        <Layout style={styles.SignInForm}>
-          <Layout style={styles.layout} level="1">
-            <Text category="h2">Sign in</Text>
-          </Layout>
-          <Layout style={styles.layout} level="1">
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.keyboardAvoidingContainer}
+        >
+          <Layout style={styles.SignInForm} level="1">
+            <Text category="h2" style={{textAlign:'center'}}>Sign in</Text>
             <Input
               label="Email"
               type="email"
@@ -48,9 +50,8 @@ const SigninScreen = ({ navigation }) => {
               onChangeText={setEmail}
               autoCapitalize="none"
               autoCorrect={false}
+              style={styles.formInputStyle}
             />
-          </Layout>
-          <Layout style={styles.layout} level="1">
             <Input
               label="Password"
               secureTextEntry
@@ -58,35 +59,30 @@ const SigninScreen = ({ navigation }) => {
               onChangeText={setPassword}
               autoCapitalize="none"
               autoCorrect={false}
+              style={styles.formInputStyle}
             />
-          </Layout>
-          {errorMessage ? (
-            <Text style={styles.errorMessage}>{errorMessage}</Text>
-          ) : null}
-          <Layout style={styles.layout} level="1">
+            {errorMessage ? (
+              <Text style={styles.errorMessage}>{errorMessage}</Text>
+            ) : null}
             <Button
-              style={[
-                {
-                  backgroundColor: myTheme.colors.primary,
-                  borderColor: myTheme.colors.primary,
-                  width: "100%",
-                },
-              ]}
+              style={{
+                backgroundColor: myTheme.colors.primary,
+                borderColor: myTheme.colors.primary,
+                width: "100%",
+              }}
               onPress={() => signin()}
             >
               {loading ? "Signing you in..." : "Sign In"}
             </Button>
-          </Layout>
-          <Layout style={styles.layout} level="1">
             <Text
               category="s1"
-              style={{ color: myTheme.colors.primary }}
+              style={[styles.formInputStyle,{ color: myTheme.colors.primary, textAlign:'center' }]}
               onPress={() => navigation.navigate("Signup")}
             >
               Don't have an account? Sign up
             </Text>
           </Layout>
-        </Layout>
+        </KeyboardAvoidingView>
       </ImageBackground>
     </View>
   );
@@ -101,7 +97,16 @@ SigninScreen.navigationOptions = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
+  },
+  keyboardAvoidingContainer: {
+    flex: 1,
+    justifyContent: "flex-end", // Move the form to the top when the keyboard appears
+  },
+  SignInForm: {
+    padding: 30,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    backgroundColor: "rgba(255, 255, 255, 1)",
   },
   errorMessage: {
     fontSize: 16,
@@ -116,19 +121,10 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
   },
-  SignInForm: {
-    height: "50%",
-    padding: 15,
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
+  formInputStyle:{
+    marginVertical:10
   },
-  layout: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: 15,
-    marginRight: 15,
-  },
+ 
 });
 
 export default SigninScreen;

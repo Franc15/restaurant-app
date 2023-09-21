@@ -11,25 +11,17 @@ const MainScreen = ({ navigation }) => {
         {/* Add a semi-transparent background color */}
         <View style={styles.overlay}>
           <View style={styles.glassEffect}>
+            <View>
             <Text category="h1" style={{ color: '#fff', textAlign: 'center' }}>
               Welcome To
             </Text>
             <Text category="h1" style={{ color: myTheme.colors.primary, textAlign: 'center' }}>
               Foodie Findr!
             </Text>
+
+            </View>
             <View style={styles.buttonContainer}>
-              <Button
-                style={{
-                  backgroundColor: myTheme.colors.primary,
-                  borderColor: myTheme.colors.primary,
-                  marginVertical: 10,
-                  borderRadius: 50
-                }}
-                onPress={() => navigation.navigate("Signup")}
-              >
-                Sign Up
-              </Button>
-              <Button
+            <Button
                 appearance="outline"
                 status="warning"
                 style={{
@@ -42,6 +34,18 @@ const MainScreen = ({ navigation }) => {
               >
                 Sign In
               </Button>
+              <Button
+                style={{
+                  backgroundColor: myTheme.colors.primary,
+                  borderColor: myTheme.colors.primary,
+                  marginVertical: 10,
+                  borderRadius: 50
+                }}
+                onPress={() => navigation.navigate("Signup")}
+              >
+                Sign Up
+              </Button>
+              
             </View>
           </View>
         </View>
@@ -79,12 +83,12 @@ const styles = StyleSheet.create({
 
   // Add a semi-transparent background color
   glassEffect: {
-    backgroundColor: "rgba(255, 255, 255, 0.25)",
+    backgroundColor: "rgba(255, 255, 255, 0.55)",
     padding: 20,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     justifyContent: "space-between",
-    height: "35%",
+    height: "50%",
     borderColor: '#fff',
     borderWidth: 1,
   },
