@@ -65,6 +65,14 @@ const ResultsShowScreen = ({ navigation }) => {
           restaurant_id: id,
           restaurant_name: result.name,
           restaurant_image: result.image_url,
+          restaurant_phone: result.phone,
+          restaurant_rating: result.rating,
+          restaurant_review_count: result.review_count,
+          restaurant_city: result.location.city,
+          restaurant_location1: result.location.address1,
+          restaurant_latitude: result.coordinates.latitude,
+          restaurant_longitude: result.coordinates.longitude,
+
         });
         console.log(response.data);
         console.log("Added to wishlist!")
