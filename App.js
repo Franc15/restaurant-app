@@ -14,8 +14,9 @@ import SigninScreen from "./src/screens/SigninScreen";
 import WishlistScreen from "./src/screens/WishlistScreen";
 import AccountScreen from "./src/screens/AccountScreen";
 import { Provider } from "react-redux";
-import { store } from "./src/store/store";
 import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons or any other icon library you prefer
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./src/store/store";
 
 // Define your icons here
 const searchIcon = <Icon name="search" size={24} color="white" />;
@@ -159,9 +160,12 @@ const App = () => {
   return (
     <>
       <Provider store={store}>
+        
         <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={myTheme}>
+        <PersistGate loading={null} persistor={persistor}>
           <AppNavigator />
+          </PersistGate>
         </ApplicationProvider>
       </Provider>
     </>
