@@ -1,11 +1,12 @@
 import React from "react";
+import { View, Image } from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import { createStackNavigator, HeaderBackButton } from "react-navigation-stack"; // Import HeaderBackButton
+import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { ApplicationProvider, Text, IconRegistry } from "@ui-kitten/components";
 import * as eva from "@eva-design/eva";
-import { EvaIconsPack } from "@ui-kitten/eva-icons"; // Import EvaIconsPack
-import { myTheme } from "./eva"; // Import your UI Kitten theme
+import { EvaIconsPack } from "@ui-kitten/eva-icons";
+import { myTheme } from "./eva";
 import SearchScreen from "./src/screens/SearchScreen";
 import ResultsShowScreen from "./src/screens/ResultsShowScreen";
 import ResultsMap from "./src/components/ResultsMap";
@@ -14,11 +15,13 @@ import SigninScreen from "./src/screens/SigninScreen";
 import WishlistScreen from "./src/screens/WishlistScreen";
 import AccountScreen from "./src/screens/AccountScreen";
 import { Provider } from "react-redux";
-import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons or any other icon library you prefer
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./src/store/store";
 
 // Define your icons here
+import Icon from 'react-native-vector-icons/Ionicons';
+import MainScreen from "./src/screens/MainScreen";
+import FoodieFindrLogo from "./assets/splash.png"
 const searchIcon = <Icon name="search" size={24} color="white" />;
 const mapIcon = <Icon name="map" size={24} color="white" />;
 const wishlistIcon = <Icon name="heart" size={24} color="white" />;
@@ -29,16 +32,58 @@ const logoutIcon = (
     name="log-out"
     size={24}
     color="black"
-    style={{ marginRight: 10, backgroundColor: "transparent" }} // Add a background color
-    // Add the logic to handle the logout action here
+    style={{ marginRight: 10, backgroundColor: "transparent" }}
     onPress={() => {
       // Handle the logout action here
     }}
   />
 );
 
+// const navigator = createStackNavigator(
+//   {
+//     Search: SearchScreen,
+//     ResultsShow: ResultsShowScreen,
+//     Map: ResultsMap,
+//     Signup: SignupScreen,
+//     Signin: SigninScreen,
+//   },
+//   {
+//     initialRouteName: "Search",
+//     defaultNavigationOptions: {
+//       headerTitle: () => (
+//         <Text category="h3" style={{ color: "white" }}>
+//           FoodieFindr
+//         </Text>
+//       ),
+//       headerStyle: {
+//         backgroundColor: myTheme.colors.primary,
+//       },
+//     },
+//   }
+// );
+
+// CustomHeader component for the "Search" screen header
+const CustomHeader = () => (
+  <View style={{ flexDirection: "row", alignItems: "center" }}>
+    {/* First column (empty) */}
+    <View style={{ flex: 1 }}></View>
+
+    {/* Second column (image) */}
+    <View style={{ flex: 4, alignItems: "center" }}>
+      <Image
+        source={FoodieFindrLogo}
+        style={{ width: 150, height: 50 }} // Customize the size
+      />
+    </View>
+
+    {/* Third column (icon) */}
+    <View style={{ flex: 1, alignItems: "flex-end" }}>{logoutIcon}</View>
+  </View>
+);
+
 const switchNavigator = createSwitchNavigator({
   loginFlow: createStackNavigator({
+    Main: MainScreen,
     Signup: SignupScreen,
     Signin: SigninScreen,
   }),
@@ -50,8 +95,7 @@ const switchNavigator = createSwitchNavigator({
             Search: {
               screen: SearchScreen,
               navigationOptions: ({ navigation }) => ({
-                title: 'Business Search',
-                headerRight: () => logoutIcon, // Add the logout icon
+                headerTitle: () => <CustomHeader />, // Use the CustomHeader component
               }),
             },
             ResultsShow: ResultsShowScreen,

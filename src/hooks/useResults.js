@@ -30,9 +30,9 @@ export default () => {
     }
   };
 
-  //   searchApi("pasta");
+
   useEffect(() => {
-    searchApi("pasta");
+    searchApi("");
   }, []);
 
   return [searchApi, loading, results, errorMessage];
